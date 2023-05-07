@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import todoapp.dto.TodoDto;
 import todoapp.entity.Todo;
+import todoapp.exception.ResourceNotFoundException;
 import todoapp.mapper.AutoToDoMapper;
 import todoapp.repository.TodoRepository;
 
@@ -33,7 +34,8 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public TodoDto getTodoById(Long id) {
-        Todo todo = todoRepository.findById(id).get();
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("todo", "id", Long.toString(id)))
+                ;
         TodoDto todoDto = AutoToDoMapper.MAPPER.mapToTodoDto(todo);
         return todoDto;
     }
@@ -66,8 +68,21 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    public TodoDto completeTodoById(Long id) {
+//        find todo by id
+        TodoDto todoDto = getTodoById(id);
+//        set completed status to true
+        todoDto.setCompleted(true);
+//        convert updated todoDto to todo and save to db and return a todo entity
+        Todo todoCompleted = todoRepository.save(AutoToDoMapper.MAPPER.mapToTodo(todoDto));
+//        convert to todo to todoDto and return
+        return AutoToDoMapper.MAPPER.mapToTodoDto(todoCompleted);
+    }
+
+    @Override
     public void deleteTodoById(Long id) {
-        Todo todoToDelete = todoRepository.findById(id).get();
+//        Check if todo with id exists and throw a ResourceNotFound exception if not found
+        Todo todoToDelete = todoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("todo", "id", Long.toString(id)));
         todoRepository.delete(todoToDelete);
     }
 }
