@@ -51,8 +51,7 @@ public class TodoController {
                 @RequestBody TodoDto todoDto
         ){
 //        Set todoDto id to id in the path variable
-        todoDto.setId(id);
-        TodoDto updatedDto = todoService.updateTodoById(todoDto);
+        TodoDto updatedDto = todoService.updateTodoById(id, todoDto);
 
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
         }

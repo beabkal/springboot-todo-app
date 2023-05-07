@@ -48,9 +48,9 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public TodoDto updateTodoById(TodoDto todoDto) {
+    public TodoDto updateTodoById(Long id, TodoDto todoDto) {
 //        Get the todoDto object to be updated
-        TodoDto todoDtoToUpdate = getTodoById(todoDto.getId());
+        TodoDto todoDtoToUpdate = getTodoById(id);
 
 //        Set the updated values to todo dto
         todoDtoToUpdate.setTitle(todoDto.getTitle());
