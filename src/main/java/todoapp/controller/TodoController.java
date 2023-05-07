@@ -61,10 +61,17 @@ public class TodoController {
         todoService.deleteTodoById(id);
         return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
      }
-//     REST endpoint for patching "completed" section of todo
+//     REST endpoint for patching "completed" section of todo into complete
      @PatchMapping("{id}/complete")
         public ResponseEntity<TodoDto> completeTodo(@PathVariable Long id){
         TodoDto completedTodo = todoService.completeTodoById(id);
         return new ResponseEntity<>(completedTodo, HttpStatus.OK);
+        }
+    //     REST endpoint for patching "completed" section of todo into incomplete
+
+    @PatchMapping("{id}/incomplete")
+        public ResponseEntity<TodoDto> incompleteTodo(@PathVariable Long id){
+        TodoDto incompleteTodo = todoService.incompleteTodoById(id);
+        return new ResponseEntity<>(incompleteTodo, HttpStatus.OK);
         }
 }

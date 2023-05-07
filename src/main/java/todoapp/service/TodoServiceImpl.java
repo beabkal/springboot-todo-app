@@ -80,6 +80,19 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    public TodoDto incompleteTodoById(Long id) {
+
+//        find todo by id
+        TodoDto todoDto = getTodoById(id);
+//        set completed status to false
+        todoDto.setCompleted(false);
+//        convert updated todoDto and save to db and return a todo entity
+        Todo todoIncomplete = todoRepository.save(AutoToDoMapper.MAPPER.mapToTodo(todoDto));
+//        convert todo back to todoDto and return
+        return AutoToDoMapper.MAPPER.mapToTodoDto(todoIncomplete);
+    }
+
+    @Override
     public void deleteTodoById(Long id) {
 //        Check if todo with id exists and throw a ResourceNotFound exception if not found
         Todo todoToDelete = todoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("todo", "id", Long.toString(id)));
