@@ -3,6 +3,8 @@ package todoapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -22,4 +24,10 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+//    Establish many-to-many relation between User and Role entites
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_roles",
+    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 }
