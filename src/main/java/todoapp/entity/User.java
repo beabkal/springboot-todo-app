@@ -3,6 +3,8 @@ package todoapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -22,4 +24,6 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 }
